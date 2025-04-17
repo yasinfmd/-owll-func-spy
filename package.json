@@ -1,10 +1,10 @@
 {
   "name": "@owll/func-spy",
-  "version": "1.0.0",
-  "description": "A CLI tool to check for environment variables in your Node.js application.",
-  "main": "index.js",
+  "version": "1.0.2",
+  "description": "A JavaScript/TypeScript analysis tool to find function references and call sites using AST.",
+  "main": "index.cjs",
   "bin": {
-    "@owll/node-env-checker": "./index.js"
+    "@owll/func-spy": "./index.cjs"
   },
   "scripts": {},
   "keywords": [
@@ -25,13 +25,13 @@
     "devtools",
     "function-tracker"
   ],
-  "homepage": "https://github.com/yasinfmd/-owll-node-env-checker#readme",
+  "homepage": "https://github.com/yasinfmd/-owll-func-spy#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yasinfmd/-owll-node-env-checker.git"
+    "url": "git+https://github.com/yasinfmd/-owll-func-spy.git"
   },
   "bugs": {
-    "url": "https://github.com/yasinfmd/-owll-node-env-checker/issues"
+    "url": "https://github.com/yasinfmd/-owll-func-spy/issues"
   },
   "author": "Yasin Dalkılıç",
   "license": "MIT",
@@ -42,10 +42,7 @@
   "dependencies": {
     "@owll/func-spy": "file:",
     "@owll/funcy-spy": "file:",
-    "@owll/node-env-checker": "file:",
-    "chalk": "^4.1.2",
-    "dotenv": "^16.5.0",
-    "minimist": "^1.2.8",
-    "node-env-checker": "file:"
+    "acorn": "^8.14.1",
+    "acorn-walk": "^8.3.4"
   }
 }

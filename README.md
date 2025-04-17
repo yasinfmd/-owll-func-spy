@@ -1,137 +1,94 @@
+# @owll/func-spy
 
-# @owll/node-env-checker
-
-The `@owll/node-env-checker` package is a command-line tool used to check format errors, duplicate keys, empty values, and required environment variables in `.env` files. The output can be in either JSON or Markdown format.
+A JavaScript/TypeScript analysis tool to find function references and call sites using AST (Abstract Syntax Tree). This CLI tool helps you analyze the usage of a function throughout your codebase by parsing JavaScript or TypeScript files.
 
 ## Features
-
-- Reports invalid formats, empty values, and duplicate keys in `.env` files.
-- Checks for missing required environment variables.
-- Outputs reports in JSON or Markdown format.
+- Identify **function calls** and **references** within a JavaScript or TypeScript file.
+- Support for ECMAScript versions from 2015 (ES6) to the current year.
+- Easily integrates into your development workflow to help with refactoring and debugging.
 
 ## Installation
 
-You can install `@owll/node-env-checker` globally or as a project dependency.
+You can install the package globally or use it directly via `npx`.
 
-### Global Installation
-
-To install globally, use the following command:
+### Option 1: Install globally
 
 ```bash
-npm install -g @owll/node-env-checker
+npm install -g @owll/func-spy
 ```
 
-### Project-based Installation
-
-To install as a project dependency:
+### Option 2: Install globally
 
 ```bash
-npm install @owll/node-env-checker --save-dev
-```
-
-Then, you can run the `@owll/node-env-checker` command:
-
-```bash
-npx @owll/node-env-checker
+npx @owll/func-spy path/to/your/file.js functionName
 ```
 
 ## Usage
 
-### Basic Usage
-
-By default, `@owll/node-env-checker` checks the `.env` files in the current directory for invalid formats, empty values, and duplicate keys.
+After installation, you can use the command line tool to analyze the usage of a specific function in a JavaScript or TypeScript file.
 
 ```bash
-npx @owll/node-env-checker
+func-spy <file-path> <function-name>
+
+<file-path>: The path to the JavaScript or TypeScript file you want to analyze.
+
+<function-name>: The name of the function whose references and calls you want to find.
 ```
 
-### Required Keys Check
-
-If you want to check for specific required environment variables (keys), you can use the `--required` flag. This flag takes a comma-separated list of keys. Example usage:
-
+## Example
+To analyze a function named startGame in a file called game.js:
 ```bash
-npx @owll/node-env-checker --required DB_HOST,DB_USER,DB_PASS
+npx @owll/func-spy game.js startGame
 ```
+This will analyze the game.js file and search for all occurrences of the startGame function.
 
-This command will check for the specified keys in your `.env` files and report any missing ones.
 
-### Report Formats
-
-#### JSON Format
-
-To get the report in JSON format, use the `--report json` flag:
-
-```bash
-npx @owll/node-env-checker --report json
-```
-
-The output might look like this:
+## Output
+The tool will output a JSON object with details about the function calls and references found in the file. The output will look like this:
 
 ```json
-[
-  {
-    "file": ".env",
-    "issues": [
-      {
-        "type": "INVALID_FORMAT",
-        "line": 3,
-        "content": "DB_HOST="
-      },
-      {
-        "type": "DUPLICATE_KEY",
-        "key": "DB_USER"
-      },
-      {
-        "type": "EMPTY_VALUE",
-        "key": "DB_PASS"
-      }
-    ]
-  }
-]
+{
+  "calls": [
+    {
+      "line": 10,
+      "arguments": ["literal_argument", "Identifier(player)"]
+    },
+    {
+      "line": 25,
+      "arguments": ["Identifier(gameId)", "literal_argument"]
+    }
+  ],
+  "references": [
+    {
+      "line": 5,
+      "column": 15
+    },
+    {
+      "line": 18,
+      "column": 7
+    }
+  ]
+}
 ```
 
-#### Markdown Format
-
-To get the report in Markdown format, use the `--report md` flag:
-
+## Output Explanation:
 ```bash
-npx @owll/node-env-checker --report md
+calls: An array of function calls where the function is called in the file.
+
+line: The line number where the function call occurs.
+
+arguments: An array of arguments passed to the function, showing either the literal value or the identifier used.
+
+references: An array of references to the function, showing where the function is referenced without being called.
+
+line: The line number where the reference occurs.
+
+column: The column number where the reference occurs in the line.
 ```
 
-The output might look like this:
+## Supported ECMAScript Versions
 
-```markdown
-# Env File Report
-
-## .env
-✅ All variables are valid.
-
-## .env.production
-- ⚠️ **Invalid Format** (line 3): `DB_HOST=`
-- ❌ **Repeat Key**: `DB_USER`
-- ⚠️ **Empty Value**: `DB_PASS`
-```
-
-## Error Types
-
-`@owll/node-env-checker` reports the following error types:
-
-- **INVALID_FORMAT**: Invalid format for a key-value pair (e.g., `KEY=` instead of `KEY=VALUE`).
-- **DUPLICATE_KEY**: A key appears multiple times.
-- **EMPTY_VALUE**: A key has an empty value.
-- **MISSING_REQUIRED**: A required key is missing.
-
-## Other Commands
-
-### Help
-
-To view all available options:
-
-```bash
-npx @owll/node-env-checker --help
-```
-
-This command will provide information about all available options and parameters.
+The tool supports ECMAScript versions from 2015 (ES6) to the current year. The parser will try parsing with different ECMAScript versions starting from the latest supported version and fall back to previous versions if parsing fails.
 
 ## Support
 
